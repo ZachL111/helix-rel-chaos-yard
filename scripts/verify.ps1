@@ -59,3 +59,5 @@ foreach ($pathPattern in $knownPaths) {
 }
 
 forge test
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-helix-rel-chaos-detail.ps1

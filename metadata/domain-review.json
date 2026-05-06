@@ -1,0 +1,73 @@
+{
+  "repo": "helix-rel-chaos-yard",
+  "language": "Solidity",
+  "category": "Reliability",
+  "goal": "Develop a Solidity command-oriented project for chaos scenarios with framed sample traffic, bounds and ordering tests, and offline replay mode.",
+  "review_model": {
+    "terms": [
+      "budget pressure",
+      "failure width",
+      "recovery gap",
+      "runbook drift"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "budget pressure",
+      "signal": 69,
+      "slack": 39,
+      "drag": 13,
+      "confidence": 50,
+      "score": 188,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "failure width",
+      "signal": 46,
+      "slack": 27,
+      "drag": 19,
+      "confidence": 46,
+      "score": 108,
+      "lane": "watch"
+    },
+    {
+      "name": "edge",
+      "focus": "recovery gap",
+      "signal": 77,
+      "slack": 40,
+      "drag": 8,
+      "confidence": 45,
+      "score": 215,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "runbook drift",
+      "signal": 88,
+      "slack": 27,
+      "drag": 15,
+      "confidence": 57,
+      "score": 215,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "budget pressure",
+      "signal": 72,
+      "slack": 40,
+      "drag": 10,
+      "confidence": 60,
+      "score": 214,
+      "lane": "ship"
+    }
+  ]
+}

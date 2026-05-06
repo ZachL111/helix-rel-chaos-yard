@@ -1,69 +1,40 @@
 # helix-rel-chaos-yard
 
-`helix-rel-chaos-yard` is a Solidity project for Reliability. It turns develop a Solidity command-oriented project for chaos scenarios with framed sample traffic, bounds and ordering tests, and offline replay mode into a small local model with readable fixtures and a direct verification command.
+`helix-rel-chaos-yard` explores reliability with a small Solidity codebase and local fixtures. The technical goal is to develop a Solidity command-oriented project for chaos scenarios with framed sample traffic, bounds and ordering tests, and offline replay mode.
 
-## Reading Helix Rel Chaos Yard
+## Reason For The Project
 
-Start with the README, then open `metadata/project.json` to check the constants behind the examples. After that, `fixtures/cases.csv` shows the compact path and `examples/extended_cases.csv` gives a wider look at the same rule.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Purpose
+## Helix Rel Chaos Yard Review Notes
 
-The goal is to capture the core behavior in code and make the surrounding assumptions obvious. A reader should be able to run the verifier, open the fixtures, and understand why each decision was made.
-
-## Fixture Notes
-
-`degraded` is the first example I would inspect because it lands on the `review` path with a score of -28. The broader file also keeps `degraded` at -28 and `surge` at 216, which gives the model a useful low-to-high spread.
-
-## Design Sketch
-
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying reliability behavior without needing a service or database unless the language project itself is SQL. The Solidity project uses Foundry tests and pure contract functions so invariants are cheap to exercise.
+For a quick review, compare `recovery gap` with `failure width` before reading the middle cases.
 
 ## What It Does
 
-- Models failure windows with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep retry budgets changes visible in code review.
-- Includes extended examples for runbook checks, including `surge` and `degraded`.
-- Documents recovery paths tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+- `fixtures/domain_review.csv` adds cases for budget pressure and failure width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/helix-rel-chaos-walkthrough.md` walks through the case spread.
+- The Solidity code includes a review path for `recovery gap` and `failure width`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Usage
+## How It Is Put Together
+
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
+
+The Solidity checks add a pure review lens and Foundry coverage.
+
+## Run It
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Check It
 
-## Verification
+The check exercises the source code and the review fixture. `edge` is the high score at 215; `stress` is the low score at 108.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Boundaries
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Files Worth Reading
-
-- `src`: primary implementation
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `foundry.toml`: Foundry project configuration
-
-## Next Directions
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more reliability fixture that focuses on a malformed or borderline input.
-
-## Limits
-
-This code is local-first. It makes no claim about deployed usage and avoids credentials, hosted state, and environment-specific setup.
-
-## Setup
-
-Clone the repository, enter the directory, and run the verifier. No database server, cloud account, or token is required.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
