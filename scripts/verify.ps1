@@ -61,3 +61,9 @@ foreach ($pathPattern in $knownPaths) {
 forge test
 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-helix-rel-chaos-detail.ps1
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-helix-rel-chaos-properties.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-helix-rel-chaos-golden.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -1,0 +1,17 @@
+{
+  "repo": "helix-rel-chaos-yard",
+  "thresholds": {
+    "signal": 2,
+    "slack": 1,
+    "confidence": 2,
+    "drag": 4,
+    "ship": 157,
+    "watch": 105
+  },
+  "terms": [
+    "budget pressure",
+    "failure width",
+    "recovery gap",
+    "runbook drift"
+  ]
+}
